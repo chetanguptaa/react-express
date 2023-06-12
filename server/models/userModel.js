@@ -23,12 +23,12 @@ userSchema.pre("save", async function(next) {
         return next();
     }
     const salt = await bcrypt.genSalt(config.get("saltWorkFactor"));
-    const hash = await bcrypt.hashSync(user.password, salt);
+    const hash = bcrypt.hashSync(user.password, salt);
     user.password = hash;
     return next();
 })
 
-userSchema.methods.comparePassword = async (candidatePassword) => {
+userSchema.methods.comparePassword = async function(candidatePassword) {
     const user = this;
     return bcrypt.compare(candidatePassword, user.password).catch((e) => false);
 };
