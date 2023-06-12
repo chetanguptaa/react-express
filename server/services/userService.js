@@ -1,21 +1,13 @@
-const { UserModel } = require('../models/userModel');
-const omit = require('omit');
+const  UserModel  = require('../models/userModel');
 
 const createUser = async (input) => {
     try {
         const user = await UserModel.create(input);
-        return omit(user.toJSON(), "password");
+        const { password, ...userWithoutPassword } = user.toJSON();
+        return userWithoutPassword;
     } catch (e) {
         throw new Error(e);
     }
-}
-
-const validatePassword = async ({email, password}) => {
-    const user = await UserModel.findOne({ email });
-    if(!user) return false;
-    const isValid = await user.comparePassword(password);
-    if(!isValid) return false;
-    return omit(user.toJSON(), 'password');
 }
 
 const findUser = async (query) => {
@@ -23,5 +15,5 @@ const findUser = async (query) => {
 }
 
 module.exports = {
-    createUser, validatePassword, findUser
+    createUser, findUser
 }
