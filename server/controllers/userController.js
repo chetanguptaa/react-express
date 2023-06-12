@@ -1,6 +1,9 @@
 const logger = require('../utils/logger');
 const { createUser } = require('../services/userService');
 const UserModel = require('../models/userModel');
+const bcrypt = require('bcryptjs');
+const { generateAccessToken,generateRefreshToken } = require('../middleware/authentication');
+
 
 const createUserHandler = async (req, res, next) => {
     try {
@@ -24,11 +27,9 @@ const loginHandler = async (req, res, next) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
         // Here, you can generate a token or session to maintain the user's authenticated state
-        const userWithoutPassword = {
-            ...user.toJSON(),
-            password: undefined
-        };
-        return userWithoutPassword;
+        const accessToken = generateAccessToken({ userId: user._id });
+        const refreshToken = generateRefreshToken({ userId: user._id });
+        return res.json({accessToken, refreshToken});
     } catch (e) {
         logger.error(e);
         return res.status(409).send(e.message);
