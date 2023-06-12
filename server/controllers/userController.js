@@ -1,5 +1,6 @@
 const logger = require('../utils/logger');
-const createUser = require('../services/userService');
+const { createUser } = require('../services/userService');
+const UserModel = require('../models/userModel');
 
 const createUserHandler = async (req, res, next) => {
     try {
@@ -10,3 +11,28 @@ const createUserHandler = async (req, res, next) => {
         return res.status(409).send(e.message);
     }
 }
+
+const loginHandler = async (req, res, next) => {
+    const { email, password } = req.body;
+    try {
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+        const isValidPassword = await user.comparePassword(password);
+        if (!isValidPassword) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+        // Here, you can generate a token or session to maintain the user's authenticated state
+        const userWithoutPassword = {
+            ...user.toJSON(),
+            password: undefined
+        };
+        return userWithoutPassword;
+    } catch (e) {
+        logger.error(e);
+        return res.status(409).send(e.message);
+    }
+  };
+
+module.exports = {createUserHandler, loginHandler};
