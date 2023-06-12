@@ -1,5 +1,5 @@
 const express = require('express');
-const {createUserHandler} = require('./controllers/userController');
+const {createUserHandler, validatePasswordHandler, loginHandler} = require('./controllers/userController');
 const validateResource = require('./middleware/validateResource');
 const createUserSchema = require('./schemas/userSchema');
 
@@ -12,8 +12,7 @@ routes.get('/', (req, res) => {
     });
 })
 routes.post('/signin', validateResource(createUserSchema), createUserHandler);
-routes.post('/login', validateResource(createUserSchema), createUserHandler);
-
+routes.post('/login', validateResource(createUserSchema), loginHandler);
 
 
 module.exports = routes;
