@@ -55,7 +55,7 @@ export default function Signin() {
                     backgroundColor: '#fff',
                 }}
                 >
-                    <Avatar sx={{ m: 'auto', bgcolor: 'cornflowerblue' }}>
+                    <Avatar sx={{ m: 'auto', bgcolor: '#FF033E' }}>
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5" sx={{ mt: 2 }}>
