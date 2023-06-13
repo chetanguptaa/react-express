@@ -9,13 +9,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useState } from 'react';
 
 const defaultTheme = createTheme();
 
 export default function Signin() {
-    const [error, setError] = useState('');
-    console.error(error);
     const handleSignin = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -33,10 +30,8 @@ export default function Signin() {
             const responseData = await response.json();
             console.log(responseData);
             event.target.reset();
-            setError('');
         } catch (error) {
-            setError('An error occured. Please try again.');
-            console.log(error);
+            console.log('An error occured: ', error);
         }
     };
     return (
