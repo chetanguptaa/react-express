@@ -50,7 +50,7 @@ export default function Login() {
                     backgroundColor: '#fff',
                 }}
                 >
-                    <Avatar sx={{ m: 'auto', bgcolor: 'cornflowerblue' }}>
+                    <Avatar sx={{ m: 'auto', bgcolor: '#FF033E' }}>
                         <LoginOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5" sx={{ mt: 2 }}>
