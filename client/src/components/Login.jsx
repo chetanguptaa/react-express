@@ -45,7 +45,7 @@ export default function Login() {
                     alignItems: 'center',
                     p: 4,
                     border: '1px solid #ccc',
-                    borderRadius: '4px',
+                    borderRadius: '12px',
                     boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)',
                     backgroundColor: '#fff',
                 }}
