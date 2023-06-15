@@ -27,10 +27,9 @@ export default function Login() {
                 body: JSON.stringify({email, password}),
             });
             const responseData = await response.json();
-            console.log(responseData);
             if (responseData.accessToken && responseData.refreshToken) {
-                sessionStorage.setItem('accessToken', responseData.accessToken);
-                sessionStorage.setItem('refreshToken', responseData.refreshToken);
+                localStorage.setItem('accessToken', responseData.accessToken);
+                localStorage.setItem('refreshToken', responseData.refreshToken);
                 window.location.href = '/me';
             } else {
                 console.error('Access token or refresh token is missing');
