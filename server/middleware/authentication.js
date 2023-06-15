@@ -13,22 +13,23 @@ const generateRefreshToken = (payload) => {
 };
 
 const auth = (req, res, next) => {
-    // const authHeader = req.headers["authorization"];
-    // if(!authHeader) {
-    //     return res.status(403).json({
-    //         message: 'authentication token is missing'
-    //     })
-    // }
-    const { accessToken, refreshToken } = req.body;
-
-    if (!accessToken || !refreshToken) {
+    const authHeader = req.headers["authorization"];
+    if(!authHeader) {
         return res.status(403).json({
-            message: 'Authentication tokens are missing'
-        });
+            message: 'authentication token is missing'
+        })
     }
+    // const { accessToken, refreshToken } = req.body;
+
+    // if (!accessToken || !refreshToken) {
+    //     return res.status(403).json({
+    //         message: 'Authentication tokens are missing'
+    //     });
+    // }
     try {
         // const token = authHeader.split(' ')[1];
-        const token = accessToken;
+        const token = authHeader;
+        // const token = accessToken;
         const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET);
         req.userId = decoded.id;
         next();
