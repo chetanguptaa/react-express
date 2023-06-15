@@ -6,7 +6,12 @@ const MePage = () => {
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const response = await fetch('http://localhost:8000/me');
+                const response = await fetch('http://localhost:8000/me', {
+                    method: 'POST',
+                    headers: {
+                        "authorization": localStorage.getItem("token")
+                    }
+                });
                 if (response.ok) {
                     const data = await response.json();
                     setUserInfo(data);
