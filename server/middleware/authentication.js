@@ -13,18 +13,30 @@ const generateRefreshToken = (payload) => {
 };
 
 const auth = (req, res, next) => {
-    const authHeader = req.headers["authorization"];
-    if(!authHeader) {
+    // const authHeader = req.headers["authorization"];
+    // if(!authHeader) {
+    //     return res.status(403).json({
+    //         message: 'authentication token is missing'
+    //     })
+    // }
+    const { accessToken, refreshToken } = req.body;
+
+    if (!accessToken || !refreshToken) {
         return res.status(403).json({
-            message: 'authentication token is missing'
-        })
+            message: 'Authentication tokens are missing'
+        });
     }
-    const decoded = jwt.verify(authHeader, ACCESS_TOKEN_SECRET);
-    if(decoded && decoded.id) {
+    try {
+        // const token = authHeader.split(' ')[1];
+        const token = accessToken;
+        const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET);
         req.userId = decoded.id;
         next();
-    } else {
-        return res.status(403).json({msg: "Incorrect token"});
+    } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expired' });
+        }
+        return res.status(403).json({ message: 'Invalid token' });
     }
 }
 
