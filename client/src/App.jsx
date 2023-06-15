@@ -1,4 +1,5 @@
 import Login from './components/Login';
+import MePage from './components/Me';
 import Signin from './components/Signin';
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
@@ -9,6 +10,7 @@ function App() {
             <Routes>
                 <Route path="/signin" element={<Signin />} />
                 <Route path="/" element={<Login />} />
+                <Route path="/me" element={<MePage />} />
             </Routes>
       </BrowserRouter> 
     </>
