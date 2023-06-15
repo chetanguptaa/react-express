@@ -28,6 +28,13 @@ export default function Login() {
             });
             const responseData = await response.json();
             console.log(responseData);
+            if (responseData.accessToken && responseData.refreshToken) {
+                sessionStorage.setItem('accessToken', responseData.accessToken);
+                sessionStorage.setItem('refreshToken', responseData.refreshToken);
+                window.location.href = '/me';
+            } else {
+                console.error('Access token or refresh token is missing');
+            }
             event.target.reset();
         } catch (error) {
             console.log('An error occured: ', error);
