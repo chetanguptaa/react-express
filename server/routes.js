@@ -13,9 +13,16 @@ routes.get('/', (req, res) => {
 })
 routes.post('/signin', validateResource(createUserSchema), createUserHandler);
 routes.post('/login', validateResource(createUserSchema), loginHandler);
-routes.get("/me", auth, (req, res) => {
-    const user = UserModel.find((x) => x.id === req.userId);
-    res.json({ email: user.email, id: user.id });
+routes.get("/me", auth, async (req, res) => {
+    try {
+        const user = await UserModel.findOne({ id: req.userId });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.json({ email: user.email, id: user.id });
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
 });
 
 
