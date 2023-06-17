@@ -36,4 +36,67 @@ const loginHandler = async (req, res) => {
     }
 };
 
-module.exports = {createUserHandler, loginHandler};
+const getUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await UserModel.findById(id);
+        res.status(200).json(user);
+    } catch (e) {
+        logger.error(e);
+        return res.status(404).send(e.message);
+    }
+}
+
+const getUserFriends = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await UserModel.findById(id);
+        const friends = await Promise.all(
+            user.friends.map((id) => UserModel.findById(id))
+        );
+        const formattedFriends = friends.map(
+            ({
+                _id, email, picturePath
+            }) => {
+                return { _id, email, picturePath }
+            }
+        );
+        res.status(200).json(formattedFriends)
+    } catch (e) {
+        logger.error(e);
+        return res.status(404).send(e.message);
+    }
+};
+
+const addRemoveFriend = async (req, res) => {
+    try {
+        const { id, friendsId } = req.params;
+        const user = await UserModel.findById(id);
+        const friend = await UserModel.findById(friendsId);
+        if(user.friends.includes(friendsId)) {
+            user.friends = user.friends.filter((id) => id !== friendsId);
+            friend.friends = friend.friends.filter((id) => id !== id);
+        } else {
+            user.friends.push(friendsId);
+            friend.friends.push(id);
+        }
+        await user.save();
+        await friend.save();
+        const friends = await Promise.add(
+            user.friends.map((id) => UserModel.findById(id))
+        )
+        const formattedFriends = friends.map(
+            ({
+                _id, email, picturePath
+            }) => {
+                return {_id, email, picturePath};
+            }
+        );
+        res.status(200).json(formattedFriends);
+    } catch (e) {
+        logger.error(e);
+        res.status(404).send(e.message);
+    }
+}
+
+module.exports = {createUserHandler, loginHandler, getUser, getUserFriends, addRemoveFriend};
