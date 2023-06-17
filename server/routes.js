@@ -24,9 +24,9 @@ routes.get('/me', auth, async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
-routes.get('/', auth, getFeedPosts);
-routes.get('/:userId/posts', auth, getUserPosts);
-routes.patch('/:id/like', auth, likePost);
+// routes.get('/', auth, getFeedPosts);
+// routes.get('/:userId/posts', auth, getUserPosts);
+// routes.patch('/:id/like', auth, likePost);
 routes.get('/:id', auth, getUser);
 routes.get('/:id/friends', auth, getUserFriends);
 routes.patch('/:id/:friendId', auth, addRemoveFriend);
