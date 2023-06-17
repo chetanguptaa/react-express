@@ -2,15 +2,14 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const config = require('config');
 
-const UserInput = {
-    email: String,
-    password: String
-};
-
 const userSchema = new mongoose.Schema(
     {
         email: {type: String, required: true, unique: true},
         password: {type: String, required: true},
+        picturePath: {type: String,default: "",},
+        friends: {type: Array,default: [],},
+        viewedProfile: Number,
+        impressions: Number,
     },
     {
         timestamps: true,
