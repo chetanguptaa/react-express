@@ -1,8 +1,8 @@
 const logger = require('../utils/logger');
 const { createUser } = require('../services/userService');
 const UserModel = require('../models/userModel');
-const { generateAccessToken,generateRefreshToken } = require('../middleware/authentication');
-
+const config  = require('config');
+const jwt = require('jsonwebtoken');
 
 const createUserHandler = async (req, res) => {
     try {
@@ -19,17 +19,15 @@ const loginHandler = async (req, res) => {
     try {
         const user = await UserModel.findOne({ email });
         if (!user) {
-            return res.status(401).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ message: "User does'nt exist." });
         }
         const isValidPassword = await user.comparePassword(password);
         if (!isValidPassword) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
-        // Here, you can generate a token or session to maintain the user's authenticated state
-        const accessToken = generateAccessToken({ userId: user._id });
-        const refreshToken = generateRefreshToken({ userId: user._id });
-        res.json({accessToken, refreshToken, redirectUrl: '/me'});
-        // res.redirect(`/me?access_token=${accessToken}`);
+        const token = jwt.sign({ id: user._id }, config.get('accessPrivateKey'));
+        delete user.password;
+        res.status(200).json({ token, user });
     } catch (e) {
         logger.error(e);
         return res.status(409).send(e.message);
