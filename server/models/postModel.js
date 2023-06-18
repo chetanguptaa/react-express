@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const postSchema = new mongoose.Schema(
+const postSchema = mongoose.Schema(
     {
         userId: {
             type: String,
@@ -23,6 +23,6 @@ const postSchema = new mongoose.Schema(
     }
 );
 
-const PostModel = mongoose.Model('Post', postSchema);
+const PostModel = mongoose.model('Post', postSchema);
 
 module.exports = PostModel;
