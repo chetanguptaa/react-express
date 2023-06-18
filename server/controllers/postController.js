@@ -54,10 +54,11 @@ const likePost = async (req, res) => {
         else post.likes.set(userId, true);
         const updatedPost = await PostModel.findByIdAndUpdate(
             id,
-            {likes: post.likes},
-            {new: true}
-        );
-        res.status(200).json(updatedPost);
+            { likes: post.likes },
+            { new: true }
+          );
+      
+          res.status(200).json(updatedPost);
     } catch (e) {
         logger.error(e);
         res.status(404).send(e.message);
