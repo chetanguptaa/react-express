@@ -2,15 +2,6 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 
 const ACCESS_TOKEN_SECRET = config.get('accessPrivateKey');
-const REFRESH_TOKEN_SECRET = config.get('refreshPrivateKey');
-
-const generateAccessToken = (payload) => {
-    return jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
-};
-
-const generateRefreshToken = (payload) => {
-    return jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
-};
 
 const auth = (req, res, next) => {
     try {
@@ -33,8 +24,6 @@ const auth = (req, res, next) => {
 }
 
 module.exports = {
-    auth,
-    generateAccessToken,
-    generateRefreshToken
+    auth
 }
 
