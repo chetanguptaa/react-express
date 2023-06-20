@@ -27,7 +27,7 @@ const loginHandler = async (req, res) => {
         }
         const token = jwt.sign({ id: user._id }, config.get('accessPrivateKey'));
         delete user.password;
-        res.status(200).json({ token, user });
+        res.status(200).json({ token });
     } catch (e) {
         logger.error(e);
         return res.status(409).send(e.message);
