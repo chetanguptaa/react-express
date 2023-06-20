@@ -26,13 +26,12 @@ export default function Login() {
                 },
                 body: JSON.stringify({email, password}),
             });
+            console.log(response);
             const responseData = await response.json();
-            if (responseData.accessToken && responseData.refreshToken) {
-                localStorage.setItem('accessToken', responseData.accessToken);
-                localStorage.setItem('refreshToken', responseData.refreshToken);
-                window.location.href = '/me';
+            if (responseData.token) {
+                localStorage.setItem('accessToken', responseData.token);
             } else {
-                console.error('Access token or refresh token is missing');
+                console.error('Access token is missing');
             }
             event.target.reset();
         } catch (error) {
